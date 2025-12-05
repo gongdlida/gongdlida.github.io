@@ -89,7 +89,3 @@ JavaScript 객체는 본질적으로 **가변(mutable)**이기 때문에
 React는 가변성 문제를 해결하기 위해 참조 비교 기반 렌더링 모델을 사용하며,
 “원본을 직접 수정하지 않고, 항상 새로운 객체를 만들어 교체한다.”
 라는 불변성(immutable) 패턴을 사실상의 표준으로 채택하고 있다.
-
-- 코어 자바스크립트 1장
-- 자바스크립트 Deep Dive 6장
-- https://react.dev/learn/tutorial-tic-tac-toe#why-immutability-is-important
