@@ -63,18 +63,19 @@ inner.[[Environment]] = Outer LE
 
 ### 3. outer() 종료 — Outer EC는 제거되지만 LE는 유지
 
-```
+``
 [ Call Stack ]
 ┌──────────────────────┐
 │ Global Execution Ctx │
 └──────────────────────┘
 
 [ Memory - Lexical Environments ]
-Outer LE   ← inner 함수가 계속 참조 중이므로 살아있음
+Outer LE ← inner 함수가 계속 참조 중이므로 살아있음
 └─ { x: 1 }
 
 inner.[[Environment]] → Outer LE
 fn = inner
+
 ```
 
 실행 컨텍스트는 pop 되었지만 렉시컬 환경은 클로저 때문에 유지됨
@@ -82,9 +83,10 @@ fn = inner
 ### 4. fn(10) 실행 — Inner EC 생성
 
 ```
+
 [ Call Stack ]
 ┌──────────────────────┐
-│ Inner Execution Ctx  │ ← 실행 중
+│ Inner Execution Ctx │ ← 실행 중
 ├──────────────────────┤
 │ Global Execution Ctx │
 └──────────────────────┘
@@ -92,9 +94,10 @@ fn = inner
 [ Memory - Lexical Environments ]
 Inner LE
 └─ { value: 10 }
-     ↓ (Outer pointer)
+↓ (Outer pointer)
 Outer LE
 └─ { x: 1 }
+
 ```
 
 스코프 체인: Inner LE → Outer LE → Global LE
@@ -102,14 +105,16 @@ Outer LE
 ### 5. inner 실행 종료 — Outer LE는 여전히 살아 있음
 
 ```
+
 [ Call Stack ]
 ┌──────────────────────┐
 │ Global Execution Ctx │
 └──────────────────────┘
 
 [ Memory - Lexical Environments ]
-Outer LE  ← fn이 여전히 참조 → GC 대상 아님
+Outer LE ← fn이 여전히 참조 → GC 대상 아님
 └─ { x: 10 }
+
 ```
 
 ## 클로저 특징
@@ -125,3 +130,4 @@ Outer LE  ← fn이 여전히 참조 → GC 대상 아님
 내부 함수에 대한 모든 참조를 제거해야
 외부 렉시컬 환경도 더 이상 참조되지 않아
 가비지 컬렉터가 회수할 수 있게 된다.
+```
