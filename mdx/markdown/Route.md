@@ -3,10 +3,10 @@
 1. HTML 파싱과 자원 로드 ￼
 
    - 브라우저가 HTML을 파싱해 DOM과 CSSOM을 만듭니다.
-     `<script src="app.bundle.js">` 같은 번들을 다운로드·실행 대기 상태로 둡니다.
+     `<script src="app.bundle.js">` 같은 번들을 다운로드·실행 대기 상태
 
    - 번들이 ESM이면 모듈 그래프(정적 import)와 동적 import(lazy 청크)를 분리해 네트워크 요청 시작
-     이때 라우트별 lazy 청크는 아직 필요 시점까지 대기합니다.
+     이때 라우트별 lazy 청크는 아직 필요 시점까지 대기
 
 2. React 런타임 초기화 ￼
 
