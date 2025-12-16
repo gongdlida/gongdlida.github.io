@@ -3,30 +3,13 @@ import Link from 'next/link'
 const Home = () => {
   const posts = [
     {
-      title: '[코어 자바스크립트] 데이터 타입',
+      title: '제어 컴포넌트와 비제어 컴포넌트',
       description:
-        '데이터 타입과 특징을 이해하고 자바스크립트 라이브러리에서 어떻게 활용하는지 살펴봅니다.',
-      tags: ['Javascript', 'React'],
-      date: '2025.12.05',
-      readingTime: '3분',
-      path: 'blog/data-type'
-    },
-    {
-      title: '[코어 자바스크립트] 콜백',
-      description:
-        '콜백의 개념과 특징을 이해하고 어떻게 활용되는지 살펴봅니다.',
-      tags: ['Javascript', 'Callback'],
-      date: '2025.12.06',
+        '제어 컴포넌트와 비제어 컴포넌트의 차이점을 이해하고, 실제 잘못된 사용 사례를 통해 올바른 활용법을 알아봅니다.',
+      tags: ['React'],
+      date: '2025.12.15',
       readingTime: '2분',
-      path: 'blog/callback'
-    },
-    {
-      title: '[코어 자바스크립트] 클로저',
-      description: '클로저 현상이 발생하는 원리를 이해합니다.',
-      tags: ['Javascript'],
-      date: '2024.12.07',
-      readingTime: '2분',
-      path: 'blog/closure'
+      path: 'blog/controlled-uncontrolled-components'
     },
     {
       title: 'React CSR 초기 로딩부터 라우팅까지',
@@ -36,6 +19,24 @@ const Home = () => {
       date: '2024.12.09',
       readingTime: '3분',
       path: 'blog/route'
+    },
+    {
+      title: '[코어 자바스크립트] 클로저',
+      description: '클로저 현상이 발생하는 원리를 이해합니다.',
+      tags: ['Javascript'],
+      date: '2024.12.07',
+      readingTime: '2분',
+      path: 'blog/closure'
+    },
+
+    {
+      title: '[코어 자바스크립트] 데이터 타입',
+      description:
+        '데이터 타입과 특징을 이해하고 자바스크립트 라이브러리에서 어떻게 활용하는지 살펴봅니다.',
+      tags: ['Javascript', 'React'],
+      date: '2025.12.05',
+      readingTime: '3분',
+      path: 'blog/data-type'
     }
   ]
 
