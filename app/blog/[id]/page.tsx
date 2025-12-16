@@ -36,6 +36,13 @@ const posts: Record<string, PostEntry> = {
   }
 }
 
+export const dynamicParams = false
+
+export const generateStaticParams = () =>
+  Object.keys(posts).map((id) => ({
+    id
+  }))
+
 export const generateMetadata = async ({
   params
 }: BlogPostProps): Promise<Metadata> => {
