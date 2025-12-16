@@ -1,3 +1,12 @@
+---
+slug: 'route'
+title: 'React CSR 초기 로딩부터 라우팅까지'
+description: 'CSR 환경, 초기 로딩부터 라우팅까지의 브라우저 내부 동작 흐름을 정리합니다.'
+tags: ['React', 'CSR', 'React Router']
+date: '2024.12.09'
+readingTime: '3분'
+---
+
 ## Closure
 
 클로저
@@ -63,7 +72,7 @@ inner.[[Environment]] = Outer LE
 
 ### 3. outer() 종료 — Outer EC는 제거되지만 LE는 유지
 
-``
+```
 [ Call Stack ]
 ┌──────────────────────┐
 │ Global Execution Ctx │
@@ -71,7 +80,8 @@ inner.[[Environment]] = Outer LE
 
 [ Memory - Lexical Environments ]
 Outer LE ← inner 함수가 계속 참조 중이므로 살아있음
-└─ { x: 1 }
+
+└─ {x: 1}
 
 inner.[[Environment]] → Outer LE
 fn = inner
@@ -130,4 +140,7 @@ Outer LE ← fn이 여전히 참조 → GC 대상 아님
 내부 함수에 대한 모든 참조를 제거해야
 외부 렉시컬 환경도 더 이상 참조되지 않아
 가비지 컬렉터가 회수할 수 있게 된다.
+
+```
+
 ```
