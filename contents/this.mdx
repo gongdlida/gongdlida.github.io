@@ -1,21 +1,19 @@
 # this
 
 함수 호출 시, 호출 방식에 따라 결정되는 실행 컨텍스트의 속성
-객체의 프로퍼티로 참조된 함수가 메서드로 호출될 경우, this는 해당 객체를 가리킨다.
-이를 통헤 동일한 메서드를 다른 객체에서 활용할 수 있어 재사용성에 좋다.
 
-## 일반함수 호출되는 경우
+## 일반함수 호출되는 경우 (기본 바인딩)
 
 ```js
 function foo() {
   return this
 }
 
-foo() // window (node global)
+foo() // globalThis
 ```
 
 자바스크립트는 non-strict 환경에서 일반함수로 호출되는 경우,  
-this는 globalThis를 가리킨다. (모듈에 따라 달라지는 경우도 있음)
+this는 globalThis를 바인딩된다. (모듈에 따라 달라지는 경우도 있음)
 
 ```js
 'use strict'
@@ -26,7 +24,7 @@ function foo() {
 foo() // undefined
 ```
 
-`'use strict` 엄격모드인 경우 this는 undefined를 바라본다.
+strict 환경에서 this는 undefined로 바인딩된다.
 this binding 초기화 과정에서 비엄격 모드인 경우에는 this가 undefined나 null일 경우  
 globalThis로 치환하는 과정이 존재하며, 엄격모드인 경우에는 치환과정이 없다.
 이후에 나오는 모든 예시는 non-strict 기준으로 작성한다.
@@ -48,7 +46,7 @@ const obj = {
 obj.getName()
 ```
 
-위 코드에서 `foo`함수 호출 시 this는 obj 객체가 아닌 window를 바라본다.  
+위 코드에서 `foo`함수 호출 시 this는 obj 객체가 아닌 window로 바인딩된다.  
 이유는 메서드로서 호출한 것이 아닌 일반함수로 호출되었기 때문에
 기본 바인딩 규칙이 적용된다.
 
@@ -72,7 +70,7 @@ const obj = {
 }[(1, 2, 3, 4)].forEach(obj.foo)
 ```
 
-위 예시에서 고차함수의 인자로 메서드를 넘겨주는 경우 역시 this는 window를 가리킨다.  
+위 예시에서 고차함수의 인자로 메서드를 넘겨주는 경우 역시 this는 window를 바인딩된다.  
 콜백함수로 넘긴 함수는 고차함수 입장에서는 foo 함수객체이므로 일반함수이며,  
 메서드로 호출된 것이 아닌 일반함수로 호출되었기 떄문이다.
 
@@ -89,7 +87,7 @@ Array.prototype.forEach, map, filter와 같은 일부 고차함수는 인자값�
 메서드의 this를 유지시켜야 하는 경우, 콜백함수 다음 인자값으로 바인딩할 this를 넣어주면,  
 메서드를 소유하고 있는 객체가 바인딩된다.
 
-## 메서드로 호출되는 경우
+## 메서드로 호출되는 경우 (암시적 바인딩)
 
 ```js
 const obj = {
@@ -106,7 +104,7 @@ obj.getName() // obj
 객체의 프로퍼티로 참조된 함수가 Reference Type을 통해 호출되면,
 this는 해당 객체로 바인딩된다.
 
-## call/apply/bind 명시적 this 메서드를 이용해 호출하는 경우
+## call/apply/bind 명시적 this 메서드를 이용해 호출하는 경우 (명시적 바인딩)
 
 call, apply, bind는 Reference 기반으로 동적으로 계산되는 this를
 개발자가 명시적으로 제어하기 위해 제공되는 API이다.
@@ -156,7 +154,7 @@ obj.foo(function () {
 bind 메서드는 메서드 내부의 중첩함수 또는 콜백함수의 this 불일치 문제를 개선할 때 유용하게 사용된다.  
 사용 시 apply/call과 달리 함수를 호출하지 않고, 첫번째 인자로 전달한 this 바인딩이 교체된 함수를 반환한다.
 
-## 생성자 함수를 이용해 호출하는 경우
+## 생성자 함수를 이용해 호출하는 경우 (생성자 바인딩)
 
 ```js
 function Human(name, age) {
@@ -226,3 +224,31 @@ bar는 화살표 함수이므로 own this binding을 생성하지 않는다.
 this는 정의된 스코프의 상위 this를 그대로 사용한다.
 
 ## this 초기화 과정
+
+```bash
+1. 함수호출
+2. CallExpression 평가
+3. 함수 실행 컨텍스트 생성
+4. this binding 초기화
+5. 함수 본문 실행
+```
+
+### CallExpression 평가 순서
+
+```bash
+CallExpression 평가 순서
+1. new 연산자 유무 검토
+  1-1. 있는 경우 Construct로 분기
+  1-2. 없는 경우 Call로 분기
+
+2. CallExpression 평가 결과가 Reference인지 Value인지에 따라 분기
+  2-1. 없는 경우, thisValue = undefined
+  2-2. 있는 경우, thisValue = base
+
+3. non-strict/strict 검토
+  3-1. non-strict인 경우, thisValue가 undefined 또는 null인 경우 thisValue = globalThis로 치환
+  3-2. strict인 경우, 치환 없이 thisValue 그대로 사용
+
+4. ExecutionContext.ThisBinding = thisValue
+
+```
