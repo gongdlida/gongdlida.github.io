@@ -176,7 +176,7 @@ new 키워드로 호출된 함수에서는 새로 생성된 객체가 this로 �
 
 ## 화살표 함수의 this
 
-화살표 함수는 this binding 과정이 없어 자체 this를 만들지 않기 때문에  
+화살표 함수는 this binding 과정이 없어 자체 this를 만들지 않기 때문에,
 this를 평가할 때마다 가장 가까운 비-화살표 함수의 this를 그대로 사용한다.
 따라서 외부 함수가 실행되기 전에는 참조할 this가 없고,  
 외부 함수 실행 후에야 그 this가 결정되어 사용된다.
@@ -222,6 +222,45 @@ obj.bar()는 메서드 호출 형태이지만,
 bar는 화살표 함수이므로 own this binding을 생성하지 않는다.
 따라서 메서드 호출 규칙은 적용되지 않고,
 this는 정의된 스코프의 상위 this를 그대로 사용한다.
+
+### 화살표 함수의 함수 실행 컨텍스트의 this binding은 있을까?
+
+자바스크립트에서 일반 함수가 호출되면 함수 실행 컨텍스트가 생성되고,  
+이 실행 컨텍스트에는 Variable Environment, Lexical Environment, 그리고 This Binding 슬롯이 포함된다.  
+이 슬롯들은 함수 실행에 필요한 정보를 저장한다.
+
+처음에는 화살표 함수 역시 함수이므로,  
+실행 컨텍스트 생성 시 this binding 슬롯이 생성되지만  
+this 초기화 과정만 생략되는 구조라고 생각했다.
+
+즉, this binding은 존재하지만 값이 할당되지 않는 상태라고 가정했다.
+
+하지만 실제로 동작을 확인해보니,  
+화살표 함수의 실행 컨텍스트에는  
+this binding 슬롯 자체가 생성되지 않는다.
+
+만약 this binding 슬롯이 존재하되 초기화만 생략되는 구조였다면,
+call, apply, bind와 같이 this를 명시적으로 바인딩하는 메서드를 호출했을 때
+해당 슬롯에 this 값이 할당되어야 한다.
+
+```js
+const obj = {
+  data: 'obj'
+}
+
+const foo = () => {
+  this.data
+}
+
+foo.call(obj) // undefined
+```
+
+그러나 화살표 함수에 대해 이러한 메서드 호출은 모두 무시된다.
+이는 덮어쓸 this binding 슬롯 자체가 존재하지 않기 때문이다.
+
+ECMAScript 명세에서도 화살표 함수는 this에 대한 로컬 바인딩을 정의하지 않으며,
+this는 실행 시 렉시컬 환경 체인을 따라
+상위 실행 컨텍스트의 this를 참조하도록 정의되어 있다. [ECMA instantiatearrowfunctionexpression](https://tc39.es/ecma262/#sec-runtime-semantics-instantiatearrowfunctionexpression)
 
 ## this 초기화 과정
 
